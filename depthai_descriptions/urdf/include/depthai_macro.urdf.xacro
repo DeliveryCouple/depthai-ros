@@ -199,7 +199,7 @@
                     <always_on>true</always_on>
                     <update_rate>5</update_rate>
                     <topic>/${camera_name}/${rgb_name}/image_raw</topic>
-                    <gz_frame_id>${camera_name}_${rgb_name}_${frame_suffix}</gz_frame_id>
+                    <gz_frame_id>${camera_name}_${rgb_name}_${optical_frame_suffix}</gz_frame_id>
                     <camera name="color">
                         <camera_info_topic>/${camera_name}/${rgb_name}/camera_info</camera_info_topic>
                         <horizontal_fov>${95 * pi / 180}</horizontal_fov>

@@ -4,11 +4,9 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
-    IncludeLaunchDescription,
     OpaqueFunction,
 )
 from launch.conditions import IfCondition
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
@@ -42,10 +40,6 @@ def launch_setup(context, *args, **kwargs):
     if context.environment.get("DEPTHAI_DEBUG") == "1":
         log_level = "debug"
 
-    urdf_launch_dir = os.path.join(
-        get_package_share_directory("depthai_descriptions"), "launch"
-    )
-
     parent_frame = LaunchConfiguration(
         "parent_frame", default="oak-d-base-frame"
     ).perform(context)
@@ -55,7 +49,6 @@ def launch_setup(context, *args, **kwargs):
     cam_roll = LaunchConfiguration("cam_roll", default="0.0")
     cam_pitch = LaunchConfiguration("cam_pitch", default="0.0")
     cam_yaw = LaunchConfiguration("cam_yaw", default="0.0")
-    use_composition = LaunchConfiguration("rsp_use_composition", default="true")
     imu_from_descr = LaunchConfiguration("imu_from_descr", default="false")
     publish_tf_from_calibration = LaunchConfiguration(
         "publish_tf_from_calibration", default="false"
@@ -179,27 +172,6 @@ def launch_setup(context, *args, **kwargs):
             name="rviz2",
             output="log",
             arguments=["-d", LaunchConfiguration("rviz_config")],
-        ),
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(urdf_launch_dir, "urdf_launch.py")
-            ),
-            launch_arguments={
-                "namespace": namespace,
-                "tf_prefix": name,
-                "camera_model": camera_model,
-                "base_frame": name,
-                "parent_frame": parent_frame,
-                "cam_pos_x": cam_pos_x,
-                "cam_pos_y": cam_pos_y,
-                "cam_pos_z": cam_pos_z,
-                "cam_roll": cam_roll,
-                "cam_pitch": cam_pitch,
-                "cam_yaw": cam_yaw,
-                "use_composition": use_composition,
-                "use_base_descr": publish_tf_from_calibration,
-                "rs_compat": rs_compat,
-            }.items(),
         ),
         ComposableNodeContainer(
             name=f"{name}_container",
