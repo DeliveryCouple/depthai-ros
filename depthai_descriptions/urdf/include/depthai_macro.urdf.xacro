@@ -6,7 +6,9 @@
 		params="camera_name camera_model parent base_frame
                                            cam_pos_x cam_pos_y cam_pos_z 
                                            cam_roll cam_pitch cam_yaw r:=0.8 g:=0.8 b:=0.8 a:=0.8 simulation:=false rs_compat:=false
-										   simulate_depth:=true simulate_rgb:=true">
+										   simulate_depth:=true simulate_rgb:=true
+								   rgb_width:=800 rgb_height:=600
+								   depth_width:=800 depth_height:=600">
 
 		<xacro:include filename="$(find depthai_descriptions)/urdf/include/base_macro.urdf.xacro" />
 		<xacro:property name="M_PI" value="3.1415926535897931" />
@@ -205,8 +207,8 @@
                         <horizontal_fov>${95 * pi / 180}</horizontal_fov>
                         <vertical_fov>${70 * pi / 180}</vertical_fov>
                         <image>
-                            <width>4032</width>
-                            <height>3040</height>
+                            <width>${rgb_width}</width>
+                            <height>${rgb_height}</height>
                             <format>RGB_INT8</format>
                         </image>
                         <clip>
@@ -227,8 +229,8 @@
                         <horizontal_fov>${128 * pi / 180}</horizontal_fov>
                         <vertical_fov>${80 * pi / 180}</vertical_fov>
                         <image>
-                            <width>1200</width>
-                            <height>800</height>
+                            <width>${depth_width}</width>
+                            <height>${depth_height}</height>
                             <format>L_INT8</format>
                         </image>
                         <clip>
